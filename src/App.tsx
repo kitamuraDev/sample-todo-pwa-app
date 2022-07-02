@@ -1,49 +1,12 @@
-import { useState } from 'react';
+import { FC } from 'react';
 
-import logo from './logo.svg';
-import './App.css';
-
-const App = () => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button
-            type='button'
-            onClick={() => setCount((preCount) => preCount + 1)}
-          >
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  );
-};
+const App: FC = () => (
+  <div>
+    <form onSubmit={(e) => e.preventDefault()}>
+      <input type='text' value='' onChange={(e) => e.preventDefault()} />
+      <input type='submit' value='追加' onSubmit={(e) => e.preventDefault()} />
+    </form>
+  </div>
+);
 
 export default App;
