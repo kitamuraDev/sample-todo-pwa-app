@@ -7,13 +7,31 @@ type Todo = {
   removed: boolean;
 };
 
+type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+
 const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<Filter>('all');
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     input.current?.focus();
   }, []);
+
+  const FilteredTodos = todos.filter((todo) => {
+    switch (filter) {
+      case 'all':
+        return !todo.removed; // 未削除
+      case 'checked':
+        return todo.complated && !todo.removed; // 完了済み かつ 未削除
+      case 'unchecked':
+        return !todo.complated && !todo.removed; // 未完了 かつ 未削除
+      case 'removed':
+        return todo.removed; // 削除済み
+      default:
+        return todo;
+    }
+  });
 
   const handleOnSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,17 +102,31 @@ const App: FC = () => {
 
   return (
     <div>
+      <select
+        defaultValue='all'
+        onChange={(e) => setFilter(e.target.value as Filter)}
+      >
+        <option value='all'>すべてのタスク</option>
+        <option value='checked'>完了したタスク</option>
+        <option value='unchecked'>現在のタスク</option>
+        <option value='removed'>ごみ箱</option>
+      </select>
       <form onSubmit={(e) => handleOnSubmit(e)}>
-        <input type='text' ref={input} />
+        <input
+          type='text'
+          ref={input}
+          disabled={filter === 'checked' || filter === 'removed'}
+        />
         <input
           type='submit'
           value='追加'
+          disabled={filter === 'checked' || filter === 'removed'}
           onSubmit={(e) => e.preventDefault()}
         />
       </form>
 
       <ul>
-        {todos.map((todo) => (
+        {FilteredTodos.map((todo) => (
           <li key={todo.id}>
             <input
               type='checkbox'
