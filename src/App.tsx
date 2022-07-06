@@ -100,6 +100,11 @@ const App: FC = () => {
     [todos],
   );
 
+  const handleOnEmpty = useCallback(() => {
+    const newTodos = todos.filter((todo) => !todo.removed);
+    setTodos(newTodos);
+  }, [todos]);
+
   return (
     <div>
       <select
@@ -111,19 +116,26 @@ const App: FC = () => {
         <option value='unchecked'>現在のタスク</option>
         <option value='removed'>ごみ箱</option>
       </select>
-      <form onSubmit={(e) => handleOnSubmit(e)}>
-        <input
-          type='text'
-          ref={input}
-          disabled={filter === 'checked' || filter === 'removed'}
-        />
-        <input
-          type='submit'
-          value='追加'
-          disabled={filter === 'checked' || filter === 'removed'}
-          onSubmit={(e) => e.preventDefault()}
-        />
-      </form>
+      {filter === 'removed' ? (
+        <button
+          type='button'
+          onClick={() => handleOnEmpty()}
+          disabled={todos.filter((todo) => todo.removed).length === 0}
+        >
+          ごみ箱を空にする
+        </button>
+      ) : (
+        filter !== 'checked' && (
+          <form onSubmit={(e) => handleOnSubmit(e)}>
+            <input type='text' ref={input} />
+            <input
+              type='submit'
+              value='追加'
+              onSubmit={(e) => e.preventDefault()}
+            />
+          </form>
+        )
+      )}
 
       <ul>
         {FilteredTodos.map((todo) => (
