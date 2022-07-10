@@ -1,37 +1,12 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 
-type Todo = {
-  value: string;
-  readonly id: number;
-  complated: boolean;
-  removed: boolean;
-};
-
-type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+import FormDialog from './FormDialog';
+import TodoItem from './TodoItem';
 
 const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<Filter>('all');
   const input = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    input.current?.focus();
-  }, []);
-
-  const FilteredTodos = todos.filter((todo) => {
-    switch (filter) {
-      case 'all':
-        return !todo.removed; // 未削除
-      case 'checked':
-        return todo.complated && !todo.removed; // 完了済み かつ 未削除
-      case 'unchecked':
-        return !todo.complated && !todo.removed; // 未完了 かつ 未削除
-      case 'removed':
-        return todo.removed; // 削除済み
-      default:
-        return todo;
-    }
-  });
 
   const handleOnSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,51 +91,21 @@ const App: FC = () => {
         <option value='unchecked'>現在のタスク</option>
         <option value='removed'>ごみ箱</option>
       </select>
-      {filter === 'removed' ? (
-        <button
-          type='button'
-          onClick={() => handleOnEmpty()}
-          disabled={todos.filter((todo) => todo.removed).length === 0}
-        >
-          ごみ箱を空にする
-        </button>
-      ) : (
-        filter !== 'checked' && (
-          <form onSubmit={(e) => handleOnSubmit(e)}>
-            <input type='text' ref={input} />
-            <input
-              type='submit'
-              value='追加'
-              onSubmit={(e) => e.preventDefault()}
-            />
-          </form>
-        )
-      )}
-
-      <ul>
-        {FilteredTodos.map((todo) => (
-          <li key={todo.id}>
-            <input
-              type='checkbox'
-              checked={todo.complated}
-              disabled={todo.removed}
-              onChange={() => handleOnCheck(todo.id, todo.complated)}
-            />
-            <input
-              type='text'
-              value={todo.value}
-              disabled={todo.complated || todo.removed}
-              onChange={(e) => handleOnEdit(todo.id, e.target.value)}
-            />
-            <button
-              type='button'
-              onClick={() => handleOnRemove(todo.id, todo.removed)}
-            >
-              {todo.removed ? '復元' : '削除'}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <button
+        type='button'
+        onClick={() => handleOnEmpty()}
+        disabled={todos.filter((todo) => todo.removed).length === 0}
+      >
+        ごみ箱を空にする
+      </button>
+      <FormDialog input={input} handleOnSubmit={handleOnSubmit} />
+      <TodoItem
+        todos={todos}
+        filter={filter}
+        handleOnCheck={handleOnCheck}
+        handleOnEdit={handleOnEdit}
+        handleOnRemove={handleOnRemove}
+      />
     </div>
   );
 };
