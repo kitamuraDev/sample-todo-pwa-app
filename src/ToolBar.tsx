@@ -5,6 +5,7 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 
 type Props = {
   filter: Filter;
+  onToggleDrawer: () => void;
 };
 
 const ToolBar: FC<Props> = memo((props) => {
@@ -33,6 +34,7 @@ const ToolBar: FC<Props> = memo((props) => {
             color='inherit'
             aria-label='menu'
             sx={{ mr: 2 }}
+            onClick={props.onToggleDrawer}
           >
             <MenuIcon />
           </IconButton>

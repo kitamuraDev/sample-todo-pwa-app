@@ -1,13 +1,20 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
 import FormDialog from './FormDialog';
+import SideBar from './SideBar';
 import TodoItem from './TodoItem';
 import ToolBar from './ToolBar';
 
 const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<Filter>('all');
+  const [drawerOpened, setDrawerOpened] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+
+  const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
+  const handleOnSort = (filterFlag: Filter) => {
+    setFilter(filterFlag);
+  };
 
   const handleOnSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,16 +90,12 @@ const App: FC = () => {
 
   return (
     <>
-      <ToolBar filter={filter} />
-      <select
-        defaultValue='all'
-        onChange={(e) => setFilter(e.target.value as Filter)}
-      >
-        <option value='all'>すべてのタスク</option>
-        <option value='checked'>完了したタスク</option>
-        <option value='unchecked'>現在のタスク</option>
-        <option value='removed'>ごみ箱</option>
-      </select>
+      <ToolBar filter={filter} onToggleDrawer={onToggleDrawer} />
+      <SideBar
+        drawerOpened={drawerOpened}
+        onToggleDrawer={onToggleDrawer}
+        handleOnSort={handleOnSort}
+      />
       <button
         type='button'
         onClick={() => handleOnEmpty()}
