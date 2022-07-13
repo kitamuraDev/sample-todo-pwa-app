@@ -2,6 +2,7 @@ import { FC, useCallback, useRef, useState } from 'react';
 
 import FormDialog from './FormDialog';
 import TodoItem from './TodoItem';
+import ToolBar from './ToolBar';
 
 const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -81,7 +82,8 @@ const App: FC = () => {
   }, [todos]);
 
   return (
-    <div>
+    <>
+      <ToolBar filter={filter} />
       <select
         defaultValue='all'
         onChange={(e) => setFilter(e.target.value as Filter)}
@@ -106,7 +108,7 @@ const App: FC = () => {
         handleOnEdit={handleOnEdit}
         handleOnRemove={handleOnRemove}
       />
-    </div>
+    </>
   );
 };
 
