@@ -1,6 +1,7 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
 import FormDialog from './FormDialog';
+import QRcode from './QRcode';
 import SideBar from './SideBar';
 import TodoItem from './TodoItem';
 import ToolBar from './ToolBar';
@@ -9,9 +10,12 @@ const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<Filter>('all');
   const [drawerOpened, setDrawerOpened] = useState(false);
+  const [QROpened, setQROpened] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
+  const onToggleQR = () => setQROpened(!QROpened);
   const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
+
   const handleOnSort = (filterFlag: Filter) => {
     setFilter(filterFlag);
   };
@@ -93,9 +97,11 @@ const App: FC = () => {
       <ToolBar filter={filter} onToggleDrawer={onToggleDrawer} />
       <SideBar
         drawerOpened={drawerOpened}
+        onToggleQR={onToggleQR}
         onToggleDrawer={onToggleDrawer}
         handleOnSort={handleOnSort}
       />
+      <QRcode open={QROpened} onToggleQR={onToggleQR} />
       <button
         type='button'
         onClick={() => handleOnEmpty()}

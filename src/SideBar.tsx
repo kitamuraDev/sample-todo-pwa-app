@@ -4,6 +4,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
 import CreateIcon from '@mui/icons-material/CreateRounded';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import ShareIcon from '@mui/icons-material/Share';
 import SubjectIcon from '@mui/icons-material/Subject';
 import {
   Divider,
@@ -51,6 +52,7 @@ const IconCompleted = styled(CheckCircleIcon)(() => ({
 
 type Props = {
   drawerOpened: boolean;
+  onToggleQR: () => void;
   onToggleDrawer: () => void;
   handleOnSort: (filter: Filter) => void;
 };
@@ -110,6 +112,12 @@ const SideBar: FC<Props> = memo((props) => (
           <ListItemText secondary='ごみ箱' />
         </ListItem>
         <Divider />
+        <ListItem button onClick={props.onToggleQR} aria-label='share'>
+          <ListItemIcon>
+            <ShareIcon />
+          </ListItemIcon>
+          <ListItemText secondary='このアプリを共有' />
+        </ListItem>
       </List>
     </DrawerList>
   </Drawer>
