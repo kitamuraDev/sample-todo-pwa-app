@@ -11,8 +11,13 @@ const App: FC = () => {
   const [filter, setFilter] = useState<Filter>('all');
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [QROpened, setQROpened] = useState(false);
+  const [formDialogOpened, setFormDialogOpened] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
+  const onToggleFormDialog = () => {
+    setFormDialogOpened(!formDialogOpened);
+    input.current!.value = '';
+  };
   const onToggleQR = () => setQROpened(!QROpened);
   const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
 
@@ -41,6 +46,7 @@ const App: FC = () => {
         ...todos,
       ]);
       input.current.value = '';
+      setFormDialogOpened(false);
     },
     [todos],
   );
@@ -109,7 +115,12 @@ const App: FC = () => {
       >
         ごみ箱を空にする
       </button>
-      <FormDialog input={input} handleOnSubmit={handleOnSubmit} />
+      <FormDialog
+        input={input}
+        handleOnSubmit={handleOnSubmit}
+        formDialogOpened={formDialogOpened}
+        onToggleFormDialog={onToggleFormDialog}
+      />
       <TodoItem
         todos={todos}
         filter={filter}
