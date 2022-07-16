@@ -1,5 +1,6 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
+import AlertDialog from './AlertDialog';
 import FormDialog from './FormDialog';
 import QRcode from './QRcode';
 import SideBar from './SideBar';
@@ -12,14 +13,16 @@ const App: FC = () => {
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [QROpened, setQROpened] = useState(false);
   const [formDialogOpened, setFormDialogOpened] = useState(false);
+  const [alertOpened, setAlertOpened] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
+  const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
+  const onToggleQR = () => setQROpened(!QROpened);
   const onToggleFormDialog = () => {
     setFormDialogOpened(!formDialogOpened);
     input.current!.value = '';
   };
-  const onToggleQR = () => setQROpened(!QROpened);
-  const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
+  const onToggleAlert = () => setAlertOpened(!alertOpened);
 
   const handleOnSort = (filterFlag: Filter) => {
     setFilter(filterFlag);
@@ -120,6 +123,11 @@ const App: FC = () => {
         handleOnSubmit={handleOnSubmit}
         formDialogOpened={formDialogOpened}
         onToggleFormDialog={onToggleFormDialog}
+      />
+      <AlertDialog
+        alertOpened={alertOpened}
+        onToggleAlert={onToggleAlert}
+        handleOnEmpty={handleOnEmpty}
       />
       <TodoItem
         todos={todos}
