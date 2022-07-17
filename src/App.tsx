@@ -1,5 +1,6 @@
 import { FC, useCallback, useRef, useState } from 'react';
 
+import ActionButton from './ActionButton';
 import AlertDialog from './AlertDialog';
 import FormDialog from './FormDialog';
 import QRcode from './QRcode';
@@ -18,10 +19,7 @@ const App: FC = () => {
 
   const onToggleDrawer = () => setDrawerOpened(!drawerOpened);
   const onToggleQR = () => setQROpened(!QROpened);
-  const onToggleFormDialog = () => {
-    setFormDialogOpened(!formDialogOpened);
-    input.current!.value = '';
-  };
+  const onToggleFormDialog = () => setFormDialogOpened(!formDialogOpened);
   const onToggleAlert = () => setAlertOpened(!alertOpened);
 
   const handleOnSort = (filterFlag: Filter) => {
@@ -111,13 +109,6 @@ const App: FC = () => {
         handleOnSort={handleOnSort}
       />
       <QRcode open={QROpened} onToggleQR={onToggleQR} />
-      <button
-        type='button'
-        onClick={() => handleOnEmpty()}
-        disabled={todos.filter((todo) => todo.removed).length === 0}
-      >
-        ごみ箱を空にする
-      </button>
       <FormDialog
         input={input}
         handleOnSubmit={handleOnSubmit}
@@ -135,6 +126,14 @@ const App: FC = () => {
         handleOnCheck={handleOnCheck}
         handleOnEdit={handleOnEdit}
         handleOnRemove={handleOnRemove}
+      />
+      <ActionButton
+        todos={todos}
+        filter={filter}
+        alertOpened={alertOpened}
+        formDialogOpened={formDialogOpened}
+        onToggleAlert={onToggleAlert}
+        onToggleFormDialog={onToggleFormDialog}
       />
     </>
   );
