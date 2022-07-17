@@ -131,6 +131,7 @@
     "public/",
     "**/node_modules/",
     "*.config.js",
-    "*.config.ts"
+    "*.config.ts",
+    "isTodos.ts" // type-predicates-generator で生成されたコードには関与しない
   ]
 }

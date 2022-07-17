@@ -1,8 +1,11 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
+
+import localforage from 'localforage';
 
 import ActionButton from './ActionButton';
 import AlertDialog from './AlertDialog';
 import FormDialog from './FormDialog';
+import { isTodos } from './lib/isTodos';
 import QRcode from './QRcode';
 import SideBar from './SideBar';
 import TodoItem from './TodoItem';
@@ -21,6 +24,18 @@ const App: FC = () => {
   const onToggleQR = () => setQROpened(!QROpened);
   const onToggleFormDialog = () => setFormDialogOpened(!formDialogOpened);
   const onToggleAlert = () => setAlertOpened(!alertOpened);
+
+  // マウント時に indexedDB からデータを読み込み、stateに保存
+  useEffect(() => {
+    localforage
+      .getItem('TodoStore')
+      .then((values) => isTodos(values) && setTodos(values))
+      .catch((e) => console.error(e));
+  }, []);
+  // todosに変化が起こったとき（crud操作）にindexedDBへstateの情報をセット
+  useEffect(() => {
+    localforage.setItem('TodoStore', todos).catch((e) => console.error(e));
+  }, [todos]);
 
   const handleOnSort = (filterFlag: Filter) => {
     setFilter(filterFlag);
