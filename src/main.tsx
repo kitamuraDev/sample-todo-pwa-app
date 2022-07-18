@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -9,6 +10,7 @@ import '@fontsource/roboto/700.css';
 import { indigo, pink } from '@mui/material/colors';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { registerSW } from 'virtual:pwa-register';
 
 import App from './App';
 
@@ -36,3 +38,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ThemeProvider>
   </React.StrictMode>,
 );
+
+registerSW();
