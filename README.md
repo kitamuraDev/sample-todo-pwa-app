@@ -93,6 +93,10 @@ jobs:
 ![Node.js](https://img.shields.io/badge/Node-v16.10.0-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v4.6.3-blue)
 
+### パッケージマネージャー
+
+![Yarn](https://img.shields.io/badge/Yarn-v1.22.5-blue)
+
 ### ライブラリ
 
 ![React](https://img.shields.io/badge/React-v18.0.0-blue)
